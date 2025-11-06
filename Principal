@@ -1,0 +1,67 @@
+package juego;
+
+import java.util.Scanner;
+
+
+public class Principal {
+	
+    public static void main(String[] args) {
+
+    Crupier crupier = new Crupier(2);
+
+	Scanner s = new Scanner(System.in);
+	
+		System.out.println("Ingrese su nombre");
+		
+		String nombre = s.nextLine();
+		
+		System.out.println("Ingrese el dinero");
+		
+		int dinero = s.nextInt();
+		s.nextLine();
+		
+		Jugador jugador = new Jugador(nombre, dinero);
+		
+		System.out.println("Bienvenido al juego de Craps, " + jugador.getNombre());
+        System.out.println("Tu saldo: $" + jugador.getDinero());
+        System.out.print("¿Cuánto quieres apostar? ");		
+        int apuesta = s.nextInt();
+        
+        jugador.apostar(apuesta);
+        
+        int suma = crupier.tirarDados();
+        
+        if(suma == 7 || suma == 11) {
+        	System.out.println("Ganaste");
+        	
+        	jugador.ganar(apuesta);
+        }else if(suma==2||suma==3||suma==12) {
+        	System.out.println("Perdiste perro");
+        }else {
+        	
+        	System.out.println("Tu punto es: " + suma);
+            int punto = suma;
+            boolean jugando = true;
+            while (jugando) {
+                System.out.println("Tirando nuevamente...");
+                int nuevoTiro = crupier.tirarDados();
+                System.out.println("Sacaste: " + nuevoTiro);
+
+                if (nuevoTiro == punto) {
+                    System.out.println("¡Volviste a sacar tu punto! Ganaste.");
+                    jugador.ganar(apuesta * 2);
+                    jugando = false;
+                } else if (nuevoTiro == 7) {
+                    System.out.println("Salio 7... perdiste.");
+                    jugando = false;
+                }
+            }
+        }
+
+        System.out.println("Tu saldo final es: $" + jugador.getDinero());
+        s.close();
+    }
+
+        
+	
+}
